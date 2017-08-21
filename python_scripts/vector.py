@@ -4,6 +4,8 @@ from decimal import Decimal, getcontext
 getcontext().prec = 30
 tolerance = 1e-10
 
+
+
 class Vector(object):
     def __init__(self, coordinates):
         try:
@@ -22,9 +24,26 @@ class Vector(object):
     def __str__(self):
         return 'Vector: {}'.format(self.coordinates)
 
-
     def __eq__(self, v):
         return self.coordinates == v.coordinates
+
+    def __iter__(self):
+        self.current = 0
+        return self
+
+    def next(self):
+        if self.current >= len(self.coordinates):
+            raise StopIteration
+        else:
+            current_value = self.coordinates[self.current]
+            self.current += 1
+            return current_value
+
+    def __len__(self):
+        return len(self.coordinates)
+
+    def __getitem__(self, i):
+        return self.coordinates[i]
 
     def add(self,v):
         #newVector = [x+y for x,y in zip(self.coordinates,v.coordinates)]
@@ -99,17 +118,8 @@ class Vector(object):
     def area_triangle(self, w):
         return ((self.cross(w)).magnitude())/2
 
-    
-print "*******"
-print "#1"
-v1 = Vector([8.462, 7.893, -8.187])
-w1 = Vector([6.984, -5.975, 4.778])
-print v1.cross(w1)
-
-v2 = Vector([-8.987, -9.838, 5.031])
-w2 = Vector([-4.268, -1.861, -8.866])
-print v2.area_parallelogram(w2)
-
-v3 = Vector([1.5, 9.547, 3.691])
-w3 = Vector([-6.007, .124, 5.772])
-print v3.area_triangle(w3)
+if __name__ == '__main__':
+    v = Vector([2,3,4])
+    w = Vector([3,4,5])
+    print v.cross(w)
+    print v.area_triangle(w)
