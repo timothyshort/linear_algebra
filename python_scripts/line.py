@@ -111,7 +111,7 @@ class Line(object):
         y = (-C*k1 + A*k2) / (A*D - B*C)
         return (x,y)
 
-    def findLineProperties(self, line):
+    def twoLineProperties(self, line):
         if (self.is_coincident(line) == "Orthogonal"):
             return "The two lines are coincident"
         elif (self.is_parallel(line) == "Parallel"):
@@ -127,15 +127,21 @@ class MyDecimal(Decimal):
 def hw1():
     line1 = Line(Vector([4.046, 2.836]), 1.21)
     line2 = Line(Vector([10.115,7.09]),3.025)
-    print line1.findLineProperties(line2)
+    print "**********"
+    print str(line1); print str(line2)
+    print line1.twoLineProperties(line2)
 
     line3 = Line(Vector([7.204, 3.182]), 8.68)
     line4 = Line(Vector([8.172, 4.114]), 9.883)
-    print line3.findLineProperties(line4)
+    print "**********"
+    print str(line3); print str(line4)
+    print line3.twoLineProperties(line4)
 
     line5 = Line(Vector([1.182, 5.562]), 6.744)
     line6 = Line(Vector([1.773, 8.343]), 9.525)
-    print line5.findLineProperties(line6)
+    print "**********"
+    print str(line4); print str(line5)
+    print line5.twoLineProperties(line6)
 
 hw1()
 
