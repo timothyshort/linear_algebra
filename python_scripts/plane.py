@@ -131,4 +131,4 @@ def hw2():
     p6 = Plane(Vector([-2.642,2.875,-2.404]),-2.443)
     hw2Helper(p5,p6)
 
-hw2()
+#hw2()
