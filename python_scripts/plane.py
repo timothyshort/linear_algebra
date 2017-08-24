@@ -95,6 +95,12 @@ class Plane(object):
         difference = self.basepoint.subtract(p.basepoint)
         return difference.is_orthogonal(p.normal_vector)
 
+    def __eq__(self,b):
+        if self.normal_vector == b.normal_vector and self.constant_term == b.constant_term:
+            return True
+        else:
+            return False
+
     @staticmethod
     def first_nonzero_index(iterable):
         for k, item in enumerate(iterable):
