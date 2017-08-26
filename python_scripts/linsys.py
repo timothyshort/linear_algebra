@@ -64,15 +64,14 @@ class LinearSystem(object):
     def compute_triangular_form(self):
         system = deepcopy(self)
 
-        #Column by column (variable by variable)
+        print "\n******************************\nTRIANGULAR FORM\n"
             
         #Row (reduce row)
         for row in range(len(system)-1):
-            print system; print ""
+            print system
 
             #Make sure we find our pivot row by having a leading non-zero coefficient
             if system[row].normal_vector[row] == 0:
-                print "LEADING TERM = 0"
                 #Find the first leading non-zero term
                 for rowLeadingNonZero in range(row+1,len(system)-1):
                     if system[rowLeadingNonZero] != 0 :
@@ -83,25 +82,43 @@ class LinearSystem(object):
             pivotRow = system[row]
             leadingCoefficient = pivotRow.normal_vector[row]
 
-            print "FOUND PIVOT ROW | " + str(row)
-            #Multiple all following rows by alpha
-            
+            #Multiple all following rows by alpha            
             for rowToBeMultipled in range(row+1,len(system)):
                 #Alpha = leading coefficient of row to be swapped / leading coefficient of pivot
                 alpha = float(-(system[rowToBeMultipled].normal_vector[row]/leadingCoefficient))
-                print "ALPHA = " + str(alpha)
                 system.add_multiple_times_row_to_row(alpha,row,rowToBeMultipled)
             
-            print ""; print system
-            print "*******\nIteration"
+            print " **Iteration**"
         return system
 
     def compute_rref(self):
+
         tf = self.compute_triangular_form()
 
+        print "\n******************************\nRREF\n"
+        print tf
         #Find values of variables
-        #Plug them in above
-        #Divide each pivot row by leading coefficient (1/leadingCoefficient)
+        for row in range(len(tf)-1,0,-1):
+
+            #Special case: if row was zeroed out during triangular computation, skip
+            if not sum(tf[row].normal_vector) == 0 :
+                for x in range(len(tf[row].normal_vector)):
+                    col = tf[row].normal_vector[x]
+
+                    ##Find leading coefficient of pivot row
+                    if col != 0:
+                        leadingCoefficient = col
+                        break
+
+                #Scale pivot row to leading coefficent of 1
+                alpha_k = float(1/leadingCoefficient)
+                tf.multiply_coefficient_and_row(alpha_k,row)
+
+                #Clear variables up
+                for rowUp in range(row,0,-1):
+                    alpha = float(-tf[rowUp-1].normal_vector[x])
+                    tf.add_multiple_times_row_to_row(alpha,row,rowUp-1)
+        print tf
 
         return tf       
 
@@ -280,7 +297,7 @@ def rrefTest():
     if not (r[0] == p1 and
             r[1] == Plane(constant_term=1)):
         print 'test case 2 failed'
-
+    
     print "******************\n   TEST CASE 3\n******************"
     p1 = Plane(normal_vector=Vector([1,1,1]), constant_term=1)
     p2 = Plane(normal_vector=Vector([0,1,0]), constant_term=2)
@@ -304,7 +321,6 @@ def rrefTest():
             r[1] == Plane(normal_vector=Vector([0,1,0]), constant_term=Decimal(7)/Decimal(9)) and
             r[2] == Plane(normal_vector=Vector([0,0,1]), constant_term=Decimal(2)/Decimal(9))):
         print 'test case 4 failed'
-
 
 #rowOpsTest()
 #triangularFormTest()
