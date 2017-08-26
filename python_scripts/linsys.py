@@ -98,7 +98,7 @@ class LinearSystem(object):
         print "\n******************************\nRREF\n"
         print tf
         #Find values of variables
-        for row in range(len(tf)-1,0,-1):
+        for row in range(len(tf)-1,-1,-1):
 
             #Special case: if row was zeroed out during triangular computation, skip
             if not sum(tf[row].normal_vector) == 0 :
@@ -112,6 +112,7 @@ class LinearSystem(object):
 
                 #Scale pivot row to leading coefficent of 1
                 alpha_k = float(1/leadingCoefficient)
+                print alpha_k
                 tf.multiply_coefficient_and_row(alpha_k,row)
 
                 #Clear variables up
@@ -322,6 +323,29 @@ def rrefTest():
             r[2] == Plane(normal_vector=Vector([0,0,1]), constant_term=Decimal(2)/Decimal(9))):
         print 'test case 4 failed'
 
+def gaussianTest():
+    print "******************\n   TEST CASE 1\n******************"
+    p1 = Plane(Vector([5.862,1.178,-10.366]),-8.15)
+    p2 = Plane(Vector([-2.931,-.589,5.183]),-4.075)
+    s = LinearSystem([p1,p2])
+    t = s.compute_rref()
+
+    print "******************\n   TEST CASE 2\n******************"
+    p1 = Plane(Vector([8.631,5.112,-1.816]),-5.113)
+    p2 = Plane(Vector([4.315,11.132,-5.27]),-6.775)
+    p3 = Plane(Vector([-2.158,3.01,-1.727]),-.831)
+    s = LinearSystem([p1,p2,p3])
+    t = s.compute_rref()
+
+    print "******************\n   TEST CASE 3\n******************"
+    p1 = Plane(Vector([5.262,2.739,-9.878]),-3.441)
+    p2 = Plane(Vector([5.111,6.358,7.638]),-2.152)
+    p3 = Plane(Vector([2.016,-9.924,-1.367]),-9.278)
+    p4 = Plane(Vector([2.167,-13.593,-18.883]),-10.567)
+    s = LinearSystem([p1,p2,p3,p4])
+    t = s.compute_rref()
+
 #rowOpsTest()
 #triangularFormTest()
-rrefTest()
+#rrefTest()
+gaussianTest()
